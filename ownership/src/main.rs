@@ -12,22 +12,25 @@ fn main() {
 
 fn two_variables_one_string() {
     let s1 = String::from("hello");
-    let s2 = s1;
-    // let s2 = s1.clone();
+    let s2 = s1; // string doesn't implement copy trait, so the ownership is moved to s2, so that s1 is invalid now
+                 // let s2 = s1.clone(); // we need to make deep copy via clone()
 
     // println!("{s1}, world!"); // won't compile: we cannot borrow value after it moved from s1 to s2.
     println!("{s2}, world!");
 }
 
 fn shallow_and_deep_copy() {
-    let a = 5;
-    let mut b = a;
+    let a = 5; // primitive scalar types implement copy trait
+    let b = a;
 
-    println!("a: {a}, b: {b}");
+    let c = (5, false); // tuples too implement copy trait if all values implement copy
 
-    b = 6;
+    let d = c.0;
 
-    println!("a: {a}, b: {b}");
+    println!("c: {} {}", c.0, c.1);
+    println!("a: {a}");
+    println!("b: {b}");
+    println!("d: {d}");
 }
 
 fn multiple_returns_calculate_string_length(s: String) -> (String, usize) {
