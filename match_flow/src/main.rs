@@ -1,3 +1,5 @@
+use std::char::MAX;
+
 enum Coin {
     Penny,
     Nickel,
@@ -58,5 +60,16 @@ fn main() {
         7 => remove_fancy_hat(),
         5 => move_player(5),
         _ => (),
+    }
+
+    let config_max = Some(3u8);
+    // this match block can be sugarized with if let construct
+    match config_max {
+        Some(max) => println!("The maximum is configured as {max}"),
+        _ => (),
+    }
+    // this is shorter but without explicit handling of other variants, also we can use else in if let block
+    if let Some(max) = config_max {
+        println!("The maximum is configured as {max}");
     }
 }
