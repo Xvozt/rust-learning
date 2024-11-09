@@ -1,5 +1,3 @@
-use std::char::MAX;
-
 enum Coin {
     Penny,
     Nickel,
