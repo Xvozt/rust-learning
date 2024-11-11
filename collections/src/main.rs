@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 enum Spredsheet {
     Int(i32),
     Float(f64),
@@ -45,6 +47,8 @@ fn main() {
     }
 
     experiments_with_string();
+    experiments_with_hash_maps();
+    hash_map_ownership();
 }
 
 fn experiments_with_string() {
@@ -86,4 +90,50 @@ fn experiments_with_string() {
     for c in "Зд".bytes() {
         println!("{c}");
     }
+}
+
+fn experiments_with_hash_maps() {
+    let mut scores = HashMap::new();
+
+    scores.insert(String::from("Blue"), 10);
+    scores.insert(String::from("Yellow"), 50);
+
+    let team_name = String::from("Blue");
+    let _score = scores.get(&team_name).copied().unwrap_or(0);
+
+    for (key, value) in &scores {
+        println!("{key}: {value}");
+    }
+}
+
+fn hash_map_ownership() {
+    let field = String::from("Favorite color");
+    let value = String::from("Blue");
+
+    let mut map = HashMap::new();
+
+    // map.insert(field, value); // hashmap is the owner of field and value
+    map.insert(&field, &value); // to use field and value we need to pass reference, but the lifetime of values should be the same like hashmap
+
+    println!("{field}"); // here will be a compile error
+
+    // how to update a hash map
+    let mut color_count = HashMap::new();
+    // replace value
+    color_count.insert(String::from("Blue"), 5);
+    color_count.insert(String::from("Blue"), 10);
+    println!("{color_count:?}");
+    // keep old value. Add a key and value only if a key isn't present
+    color_count.entry(String::from("Yellow")).or_insert(50);
+    color_count.entry(String::from("Blue")).or_insert(50);
+    println!("{color_count:?}");
+    // update a value based on the old value
+    let text = "Hello world wonderful world";
+    let mut map = HashMap::new();
+
+    for word in text.split_whitespace() {
+        let count = map.entry(word).or_insert(0);
+        *count += 1;
+    }
+    println!("{map:?}");
 }
