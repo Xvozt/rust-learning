@@ -24,7 +24,8 @@ impl<T: Display + PartialOrd> Pair<T> {
     }
 }
 
-#[allow(dead_code)]
+// blanket implementation
+// we can implement a trait for any type that implements another trait
 impl<T: Display> ToString for T {
     fn to_string(&self) -> String {
         todo!()
