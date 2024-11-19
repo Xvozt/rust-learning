@@ -1,3 +1,4 @@
+use std::fmt::Display;
 // the subject of reference doesn't live as long as the reference
 // in this case r has a lifetime of a', but refers to to memory with smaller lifetime b'
 // this produce compile error from borrow checker
@@ -32,6 +33,11 @@ fn main() {
     println!("The longest string is {result}");
 
     lifetimes_restrictions_work();
+
+    let x = String::from("first string");
+    let y = "second string";
+    let ann = "3...2...1";
+    println!("{}", longest_with_announcement(&x, y, ann));
 }
 
 // fn longest(x: &str, y: &str) -> &str {
@@ -56,12 +62,27 @@ fn lifetimes_restrictions_work() {
     }
 }
 
-fn lifetimes_restrictions_violated() {
-    let string1 = String::from("long string is long");
-    let result;
-    {
-        let string2 = String::from("xyz");
-        result = longest(string1.as_str(), string2.as_str());
+// the string2 value should live as long as result to success
+// fn lifetimes_restrictions_violated() {
+//     let string1 = String::from("long string is long");
+//     let result;
+//     {
+//         let string2 = String::from("xyz");
+//         result = longest(string1.as_str(), string2.as_str());
+//     }
+//     println!("The longest string is {result}");
+// }
+
+// generics, trait bounds and lifetimes in one example
+
+fn longest_with_announcement<'a, T>(x: &'a str, y: &'a str, ann: T) -> &'a str
+where
+    T: Display,
+{
+    println!("Announcement! {ann}");
+    if x.len() > y.len() {
+        x
+    } else {
+        y
     }
-    println!("The longest string is {result}");
 }
