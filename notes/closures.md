@@ -57,3 +57,94 @@ fn main() {
         .unwrap();
 }
 ```
+
+*Move closures may still implement `Fn` and `FnMut` traits even though they captture the variables by move. This is because the tait implemented by a closure type are determined by `what` the closure does with captured values, not `how` it captures them.*
+
+## Fn traits for closures
+
+Closures will automatically implement one, two, or all three of these Fn traits, in an additive fashion, depending on how the closure’s body handles the values:
+
+- `FnOnce` applies to closures that can be called once. All closures implement at least this trait, because all closures can be called. A closure that moves captured values out of its body will only implement FnOnce and none of the other Fn traits, because it can only be called once.
+Example:
+
+```rust
+fn apply_to_5_once<F>(f: F) -> i32
+where
+    F: FnOnce(i32) -> i32,
+{
+    f(5)
+}
+```
+
+Usage:
+
+```rust
+fn main() {
+    let s = String::from("hello");
+    let consume_and_return_length = |x| {
+        println!("Consumed string: {}", s);
+        x + s.len()
+    };
+    let result = apply_to_5_once(consume_and_return_length);
+    println!("Result: {}", result); // Output: Result: 10
+}
+```
+
+- `FnMut` applies to closures that don’t move captured values out of their body, but that might mutate the captured values. These closures can be called more than once.
+Example:
+
+```rust
+fn apply_to_5_mut<F>(mut f: F) -> i32
+where
+    F: FnMut(i32) -> i32,
+{
+    f(5)
+}
+```
+
+Usage:
+
+```rust
+fn main() {
+    let mut total = 0;
+    let mut add_to_total = |x| {
+        total += x;
+        total
+    };
+    let result = apply_to_5_mut(add_to_total);
+    println!("Result: {}", result); // Output: Result: 5
+}
+```
+
+
+- `Fn` applies to closures that don’t move captured values out of their body and that don’t mutate captured values, as well as closures that capture nothing from their environment.
+These closures can be called more than once without mutating their environment, which is important in cases such as calling a closure multiple times concurrently.
+Example:
+
+```rust
+fn apply_to_5<F>(f: F) -> i32
+where
+    F: Fn(i32) -> i32,
+{
+    f(5) // Call the closure with 5 as the argument
+}
+```
+
+Usage:
+
+```rust
+fn main() {
+    let add_one = |x| x + 1; // Closure to add 1 to its input
+    let result = apply_to_5(add_one);
+    println!("Result: {}", result); // Output: Result: 6
+}
+```
+
+## !TODO i need to investigate closures more, understood it very poorly for the first time, especially with generics and trait bounds
+
+The topic in the book - 13.1
+
+list of actions:
+- return to the topic
+- find more examples
+- ask chatgpt to generate some quizes and ask him questions to deeply understadn the topic
