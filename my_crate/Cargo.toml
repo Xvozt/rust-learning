@@ -3,6 +3,6 @@ name = "simple-one-adder"
 version = "0.1.0"
 edition = "2021"
 description = "My first lib to publish learning rust"
-license = "MIT or Apache-2.0"
+license = "MIT"
 
 [dependencies]
