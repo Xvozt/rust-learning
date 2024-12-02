@@ -1,7 +1,9 @@
+use std::cell::RefCell;
 use std::{ops::Deref, rc::Rc};
 
 use crate::List::{Cons, Nil};
 use crate::RcList::{RcCons, RcNil};
+use crate::RcRfList::{RcRfCons, RcRfNil};
 
 enum List {
     Cons(i32, Box<List>),
@@ -11,6 +13,12 @@ enum List {
 enum RcList {
     RcCons(i32, Rc<RcList>),
     RcNil,
+}
+
+#[derive(Debug)]
+enum RcRfList {
+    RcRfCons(Rc<RefCell<i32>>, Rc<RcRfList>),
+    RcRfNil,
 }
 
 struct MyBox<T>(T);
@@ -88,4 +96,17 @@ fn main() {
         println!("count after creating c = {}", Rc::strong_count(&a));
     }
     println!("count after c goes out of scope = {}", Rc::strong_count(&a));
+
+    // -- RefCell with Rc to have multiple owners AND mutate the value
+
+    let value = Rc::new(RefCell::new(5));
+
+    let a = Rc::new(RcRfCons(Rc::clone(&value), Rc::new(RcRfNil)));
+    let b = RcRfCons(Rc::new(RefCell::new(3)), Rc::clone(&a));
+    let c = RcRfCons(Rc::new(RefCell::new(4)), Rc::clone(&a));
+
+    *value.borrow_mut() += 10;
+    println!("a after = {a:?}");
+    println!("b after = {b:?}");
+    println!("c after = {c:?}");
 }
