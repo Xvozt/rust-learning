@@ -33,6 +33,6 @@ impl Draw for Button {
 
 impl Draw for TextField {
     fn draw(&self) {
-        println!("Drawing a text field: {}", self.placeholder)
+        println!("Drawing a text field: {}", self.placeholder);
     }
 }
