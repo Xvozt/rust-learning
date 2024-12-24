@@ -3,9 +3,14 @@
 version = 4
 
 [[package]]
+name = "blog"
+version = "0.1.0"
+
+[[package]]
 name = "draw"
 version = "0.1.0"
 dependencies = [
+ "blog",
  "gui",
 ]
 
