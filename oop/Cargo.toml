@@ -1,2 +1,2 @@
 [workspace]
-members = ["gui", "draw", "blog"]
+members = ["gui", "draw", "blog", "blog_type"]

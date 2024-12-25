@@ -7,10 +7,15 @@ name = "blog"
 version = "0.1.0"
 
 [[package]]
+name = "blog_type"
+version = "0.1.0"
+
+[[package]]
 name = "draw"
 version = "0.1.0"
 dependencies = [
  "blog",
+ "blog_type",
  "gui",
 ]
 

@@ -1,4 +1,5 @@
 use blog::Post;
+use blog_type::{DraftPost, PendingReviewPost, PostToPublish};
 use gui::{Button, Draw, Screen};
 
 struct SelectBox {
@@ -43,6 +44,18 @@ fn main() {
     post.request_review();
     assert_eq!("", post.content());
 
+    post.reject();
+    assert_eq!("", post.content());
+
+    post.request_review();
     post.approve();
     assert_eq!("I ate salad for lunch today", post.content());
+
+    let mut post_to_publish = PostToPublish::new();
+
+    post_to_publish.add_test("I didn't eat a salad for lunch today");
+
+    let post = post_to_publish.request_review();
+    let post = post.approve();
+    assert_eq!("I didn't eat a salad for lunch today", post.content());
 }

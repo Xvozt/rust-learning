@@ -6,3 +6,4 @@ edition = "2021"
 [dependencies]
 gui = { path = "../gui" }
 blog = { path = "../blog" }
+blog_type = { path = "../blog_type" }
