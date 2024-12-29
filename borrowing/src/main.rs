@@ -42,7 +42,7 @@ fn multiple_mutable_borrows() {
 // we also cannot combine mutable and immutable references on the same value
 
 fn mutable_and_immutable_borrows_combined() {
-    let mut s = String::from("hello");
+    let s = String::from("hello");
 
     let r1 = &s; // no problem
     let r2 = &s; // no problem

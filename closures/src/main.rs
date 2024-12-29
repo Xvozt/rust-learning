@@ -1,5 +1,5 @@
 use std::thread;
-
+#[allow(dead_code)]
 #[derive(Debug, PartialEq, Clone, Copy)]
 enum ShirtColor {
     Red,
@@ -9,7 +9,7 @@ enum ShirtColor {
 struct Inventory {
     shirts: Vec<ShirtColor>,
 }
-
+#[allow(dead_code)]
 impl Inventory {
     fn giveaway(&self, user_pref: Option<ShirtColor>) -> ShirtColor {
         user_pref.unwrap_or_else(|| self.most_stocked())
