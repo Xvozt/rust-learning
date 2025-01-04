@@ -17,3 +17,23 @@ fn main() {
     println!("The answer is: {answer}");
 }
 ```
+
+### Returning a closure
+
+We can't do this:
+```rust
+fn returns_closure() -> dyn Fn(i32) -> i32 {
+    |x| x + 1
+}
+```
+
+We cannot directly return a closure, because of Sized trait, because the compiler doesn't know how much space we need
+to store the closure.
+
+But we can return a trait object:
+
+```rust
+fn returns_closure() -> Box<dyn Fn(i32) -> i32> {
+    Box::new(|x| x + 1)
+}
+```
